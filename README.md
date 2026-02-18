@@ -295,15 +295,7 @@ The model is evaluated with metrics optimized for **imbalanced classification**:
 pytest tests/ -v
 ```
 
----
-
-## 📜 License
-
-MIT License — Free for personal and commercial use.
-
----
-
 <p align="center">
-  Made with ❤️ by <b>Bertrand</b>
+  Made by <b>Bertrand</b>
 </p>
 
