@@ -306,3 +306,4 @@ MIT License — Free for personal and commercial use.
 <p align="center">
   Made with ❤️ by <b>Bertrand</b>
 </p>
+
