@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  # ── Training service (run once) ──────────────────────────────
+  train:
+    build: .
+    command: python train.py
+    volumes:
+      - ./artifacts:/app/artifacts
+      - ./logs:/app/logs
+    env_file:
+      - .env
+    profiles:
+      - train
+
+  # ── API service ──────────────────────────────────────────────
+  api:
+    build: .
+    command: python run_api.py
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./artifacts:/app/artifacts
+      - ./logs:/app/logs
+    env_file:
+      - .env
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3

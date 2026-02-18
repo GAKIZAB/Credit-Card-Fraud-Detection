@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual env
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Data (never commit large datasets)
+data/
+*.csv
+
+# Artifacts
+artifacts/
+
+# Environment
+.env
+
+# Jupyter
+.ipynb_checkpoints/
+notebook_code.txt
+
+# OS
+Thumbs.db
+.DS_Store
