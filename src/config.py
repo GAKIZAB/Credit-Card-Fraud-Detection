@@ -1,9 +1,3 @@
-"""
-Centralized configuration for the Fraud Detection project.
-
-Uses environment variables (via .env) with sensible defaults.
-"""
-
 from pathlib import Path
 from dotenv import load_dotenv
 import os

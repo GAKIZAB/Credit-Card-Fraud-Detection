@@ -1,13 +1,3 @@
-"""
-FastAPI application — Fraud Detection REST API.
-
-Endpoints:
-  GET  /                  → Welcome & API info
-  GET  /health            → Health check with model metadata
-  POST /predict           → Single transaction prediction
-  POST /predict/batch     → Batch prediction (up to 1 000 transactions)
-"""
-
 from __future__ import annotations
 
 from contextlib import asynccontextmanager
@@ -46,9 +36,9 @@ async def lifespan(app: FastAPI):
         _state["feature_names"] = feature_names
         _state["metadata"] = metadata
         _state["loaded"] = True
-        logger.info("✅  Model artifacts loaded successfully.")
+        logger.info(" Model artifacts loaded successfully.")
     except Exception as exc:
-        logger.error(f"❌  Failed to load model artifacts: {exc}")
+        logger.error(f" Failed to load model artifacts: {exc}")
         _state["loaded"] = False
     yield
     _state.clear()
@@ -58,7 +48,7 @@ async def lifespan(app: FastAPI):
 # App factory
 # ──────────────────────────────────────────────────────────────────
 app = FastAPI(
-    title="🔒 Fraud Detection API",
+    title=" Fraud Detection API",
     description=(
         "Real-time credit card fraud detection powered by XGBoost.\n\n"
         "• Submit a transaction and receive an instant fraud probability.\n"
@@ -89,7 +79,7 @@ app.add_middleware(
 def root():
     """Welcome endpoint with links to docs."""
     return {
-        "message": "🔒 Fraud Detection API",
+        "message": " Fraud Detection API",
         "version": "1.0.0",
         "docs": "/docs",
         "redoc": "/redoc",

@@ -1,18 +1,6 @@
-"""
-Model training, evaluation, serialization and loading.
-
-Wraps XGBoost with:
-  • Automatic class-imbalance handling via scale_pos_weight
-  • MinMaxScaler normalization
-  • Optimal threshold search (maximize F1)
-  • Artifact persistence with joblib
-"""
-
 from __future__ import annotations
-
 import json
 from datetime import datetime, timezone
-
 import joblib
 import numpy as np
 import pandas as pd
@@ -45,11 +33,7 @@ def train(
     test_size: float = 0.2,
     random_state: int = 42,
 ) -> dict:
-    """
-    End-to-end training: split → scale → fit → evaluate → save.
-
-    Returns a dict with all evaluation metrics.
-    """
+    
     logger.info("🚀  Starting model training …")
 
     X = data.drop(columns=[config.TARGET_COL])
@@ -101,7 +85,6 @@ def train(
 
 
 def _evaluate(y_true: np.ndarray, proba: np.ndarray) -> dict:
-    """Compute all metrics & find optimal F1 threshold."""
 
     # Default threshold
     y_pred = (proba >= 0.5).astype(int)
@@ -167,11 +150,10 @@ def _save_artifacts(
     }
     joblib.dump(metadata, config.METADATA_PATH)
 
-    logger.info(f"  💾  Artifacts saved to {config.ARTIFACTS_DIR}")
+    logger.info(f"  Artifacts saved to {config.ARTIFACTS_DIR}")
 
 
 def load_artifacts():
-    """Load all saved artifacts for inference."""
     model = joblib.load(config.MODEL_PATH)
     scaler = joblib.load(config.SCALER_PATH)
     encoders = joblib.load(config.ENCODER_PATH)

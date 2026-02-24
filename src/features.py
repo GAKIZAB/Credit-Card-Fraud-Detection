@@ -1,22 +1,9 @@
-"""
-Feature engineering pipeline.
-
-Handles:
-  • Datetime parsing & feature extraction (age, month, week, hour)
-  • Geographic distance (client ↔ merchant)
-  • Amount-derived features (log amount, amount bins)
-  • Column dropping (identifiers and raw fields)
-  • Label encoding of categorical variables
-"""
-
 from __future__ import annotations
-
 import numpy as np
 import pandas as pd
 from geopy.distance import geodesic
 from loguru import logger
 from sklearn.preprocessing import LabelEncoder
-
 from src import config
 
 
@@ -29,14 +16,7 @@ def build_features(
     train_df: pd.DataFrame,
     test_df: pd.DataFrame,
 ) -> tuple[pd.DataFrame, dict[str, LabelEncoder]]:
-    """
-    Full feature pipeline: merge → engineer → encode.
-
-    Returns
-    -------
-    (data, encoders) where *data* is the ready-to-model DataFrame
-    and *encoders* is a dict mapping column → fitted LabelEncoder.
-    """
+   
     logger.info("🔧  Starting feature engineering …")
 
     # 1. Concatenate
@@ -63,21 +43,6 @@ def build_features(
 
 
 def engineer_single_row(row: dict, encoders: dict[str, LabelEncoder]) -> pd.DataFrame:
-    """
-    Apply the same transformations to a single transaction dict
-    (used at inference time).
-
-    Parameters
-    ----------
-    row : dict
-        Raw transaction fields.
-    encoders : dict
-        Fitted LabelEncoders from training.
-
-    Returns
-    -------
-    pd.DataFrame with one row, same columns as training features.
-    """
     df = pd.DataFrame([row])
 
     # Datetime features
@@ -140,13 +105,12 @@ def _add_datetime_features(data: pd.DataFrame) -> pd.DataFrame:
     data["semaine"] = data["trans_date_trans_time"].dt.isocalendar().week.astype(int)
     data["heure"] = data["trans_date_trans_time"].dt.hour
 
-    logger.info("  ✓ Datetime features added (age, mois, semaine, heure)")
+    logger.info("  Datetime features added (age, mois, semaine, heure)")
     return data
 
 
 def _add_distance(data: pd.DataFrame) -> pd.DataFrame:
-    """Compute geodesic distance between client and merchant."""
-    logger.info("  ⏳ Computing geodesic distances (this may take a while) …")
+    logger.info(" Computing geodesic distances (this may take a while) …")
     data["distance"] = data.apply(
         lambda r: geodesic(
             (r["lat"], r["long"]),
@@ -154,19 +118,18 @@ def _add_distance(data: pd.DataFrame) -> pd.DataFrame:
         ).km,
         axis=1,
     )
-    logger.info("  ✓ Distance feature added")
+    logger.info("  Distance feature added")
     return data
 
 
 def _add_amount_features(data: pd.DataFrame) -> pd.DataFrame:
-    """Log-transform and bin the transaction amount."""
     data["log_amt"] = np.log1p(data["amt"])
     data["amt_bin"] = pd.cut(
         data["amt"],
         bins=[0, 10, 50, 100, 500, 1000, float("inf")],
         labels=[0, 1, 2, 3, 4, 5],
     ).astype(int)
-    logger.info("  ✓ Amount features added (log_amt, amt_bin)")
+    logger.info("  Amount features added (log_amt, amt_bin)")
     return data
 
 
@@ -190,5 +153,5 @@ def _encode_categoricals(
         data[col] = le.fit_transform(data[col].astype(str))
         encoders[col] = le
 
-    logger.info(f"  ✓ Label-encoded {len(encoders)} categorical columns")
+    logger.info(f" Label-encoded {len(encoders)} categorical columns")
     return data, encoders

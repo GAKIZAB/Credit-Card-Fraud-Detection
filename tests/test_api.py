@@ -1,10 +1,3 @@
-"""
-Tests for the Fraud Detection API.
-
-Run with:
-    pytest tests/ -v
-"""
-
 import pytest
 from fastapi.testclient import TestClient
 
@@ -23,7 +16,7 @@ def client():
 
 @pytest.fixture
 def sample_transaction() -> dict:
-    """A realistic sample transaction matching TransactionInput schema."""
+
     return {
         "trans_date_trans_time": "2019-06-15 14:32:00",
         "cc_num": 4263982640269299,
@@ -108,6 +101,5 @@ class TestBatchPredict:
             assert "fraud_rate" in body
 
     def test_batch_empty_list(self, client):
-        """Empty list should fail validation (min_length=1)."""
         response = client.post("/predict/batch", json={"transactions": []})
         assert response.status_code == 422

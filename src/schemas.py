@@ -1,11 +1,4 @@
-"""
-Pydantic schemas for the Fraud Detection API.
-
-Defines request/response models with validation and examples.
-"""
-
 from __future__ import annotations
-
 from pydantic import BaseModel, Field
 from typing import Optional
 
@@ -16,7 +9,6 @@ from typing import Optional
 
 
 class TransactionInput(BaseModel):
-    """Raw transaction data sent by the client for prediction."""
 
     trans_date_trans_time: str = Field(
         ...,
@@ -75,7 +67,6 @@ class TransactionInput(BaseModel):
 
 
 class PredictionResponse(BaseModel):
-    """Prediction result returned by the API."""
 
     is_fraud: bool = Field(..., description="Whether the transaction is predicted as fraud")
     fraud_probability: float = Field(
@@ -90,7 +81,6 @@ class PredictionResponse(BaseModel):
 
 
 class HealthResponse(BaseModel):
-    """Health-check response."""
 
     status: str = "healthy"
     model_loaded: bool
@@ -109,7 +99,6 @@ class BatchPredictionRequest(BaseModel):
 
 
 class BatchPredictionResponse(BaseModel):
-    """Batch results."""
 
     predictions: list[PredictionResponse]
     total: int

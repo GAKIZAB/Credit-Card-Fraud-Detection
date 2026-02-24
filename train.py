@@ -1,16 +1,5 @@
-"""
-Training entry point.
-
-Usage:
-    python train.py
-
-Downloads data from Kaggle, engineers features, trains an XGBoost model,
-and saves all artifacts to the ./artifacts/ directory.
-"""
-
 import sys
 import time
-
 from loguru import logger
 
 # ── Logging setup ────────────────────────────────────────────────
@@ -44,11 +33,11 @@ def main():
 
     elapsed = time.perf_counter() - start
     logger.info("=" * 60)
-    logger.info(f"  ✅  Training complete in {elapsed:.1f}s")
-    logger.info(f"  📊  ROC AUC    : {metrics['roc_auc']}")
-    logger.info(f"  📊  PR AUC     : {metrics['pr_auc']}")
-    logger.info(f"  📊  F1 Score   : {metrics['f1_score']}")
-    logger.info(f"  🎯  Threshold  : {metrics['optimal_threshold']}")
+    logger.info(f"  Training complete in {elapsed:.1f}s")
+    logger.info(f"  ROC AUC    : {metrics['roc_auc']}")
+    logger.info(f"  PR AUC     : {metrics['pr_auc']}")
+    logger.info(f"  F1 Score   : {metrics['f1_score']}")
+    logger.info(f"  Threshold  : {metrics['optimal_threshold']}")
     logger.info("=" * 60)
     logger.info("  Run the API with:  python run_api.py")
     logger.info("=" * 60)
