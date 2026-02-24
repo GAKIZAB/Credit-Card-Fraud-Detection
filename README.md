@@ -35,7 +35,6 @@ The project is built around **four core technological pillars**:
 4. **Industrialization & MLOps**
    Docker-based containerization, automated testing, and a clear separation between training and inference.
 
----
 
 ## 🚀 Implementation Steps
 
@@ -90,17 +89,17 @@ A production-ready REST API built with **FastAPI**.
 * Strict input schemas defined with **Pydantic** (`schemas.py`)
 * Protection against invalid or malformed inputs
 
-#### ⚡ Real-Time Inference
+#### Real-Time Inference
 
 * `POST /predict`
   → Single-transaction prediction with probability score
 
-#### 📦 Batch Prediction
+#### Batch Prediction
 
 * `POST /predict/batch`
   → Processing of up to **1,000 transactions simultaneously**
 
-#### 🚦 Interpretable Risk Levels
+#### Interpretable Risk Levels
 
 * Mapping predicted probabilities to business-friendly categories:
 
@@ -109,7 +108,7 @@ A production-ready REST API built with **FastAPI**.
   * `HIGH`
   * `CRITICAL`
 
-#### ❤️ Monitoring
+#### Monitoring
 
 * `GET /health`
   → API and model health check
